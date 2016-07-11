@@ -1,4 +1,4 @@
-package com.devop.tasker;
+package com.devop.tasker.model;
 
 /**
  * Created by Kong My on 7/7/2016.
@@ -6,11 +6,11 @@ package com.devop.tasker;
 public class Task {
 
     private String taskName;
-    private boolean completed;
+    private boolean status;
 
     public Task(String taskName) {
         this.taskName = taskName;
-        this.completed = false;
+        this.status = false;
     }
 
     public String getTaskName() {
@@ -21,11 +21,11 @@ public class Task {
         this.taskName = taskName;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

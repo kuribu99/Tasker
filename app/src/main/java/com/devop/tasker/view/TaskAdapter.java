@@ -1,8 +1,11 @@
-package com.devop.tasker;
+package com.devop.tasker.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import com.devop.tasker.R;
+import com.devop.tasker.Task;
 
 import java.util.ArrayList;
 import java.util.List;
