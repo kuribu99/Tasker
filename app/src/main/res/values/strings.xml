@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- Task.Importance -->
+    <string name="task_importance_important">Important</string>
+    <string name="task_importance_normal">Normal</string>
+    <string name="task_importance_low">Low</string>
 </resources>

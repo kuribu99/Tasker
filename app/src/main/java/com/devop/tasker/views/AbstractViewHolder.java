@@ -1,9 +1,9 @@
-package com.devop.tasker.view;
+package com.devop.tasker.views;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.devop.tasker.Task;
+import com.devop.tasker.models.Task;
 
 /**
  * Created by Kong My on 7/7/2016.

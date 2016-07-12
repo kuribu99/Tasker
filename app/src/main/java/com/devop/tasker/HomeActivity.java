@@ -15,7 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.devop.tasker.view.TaskAdapter;
+import com.devop.tasker.models.Task;
+import com.devop.tasker.views.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

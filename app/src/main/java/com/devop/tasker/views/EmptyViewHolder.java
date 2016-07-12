@@ -1,4 +1,4 @@
-package com.devop.tasker.view;
+package com.devop.tasker.views;
 
 import android.view.View;
 

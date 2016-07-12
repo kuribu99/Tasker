@@ -1,11 +1,11 @@
-package com.devop.tasker.view;
+package com.devop.tasker.views;
 
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.devop.tasker.R;
-import com.devop.tasker.Task;
+import com.devop.tasker.models.Task;
 
 /**
  * Created by Kong My on 7/7/2016.
