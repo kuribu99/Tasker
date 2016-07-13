@@ -106,6 +106,38 @@ public class TaskDAO {
         return taskDAOs;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public long getGroupID() {
+        return groupID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public long getDueTime() {
+        return dueTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getImportance() {
+        return importance;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public void save(DatabaseHelper databaseHelper) {
         ContentValues values = new ContentValues();
         values.put(TaskColumns.COLUMN_NAME_GROUP_ID, groupID);
@@ -126,7 +158,7 @@ public class TaskDAO {
     public static abstract class Status {
         public static final int PENDING = 0;
         public static final int COMPLETED = 1;
-        public static final int DELAYED = 2;
+        public static final int OVERDUE = 2;
     }
 
     public static abstract class Importance {
