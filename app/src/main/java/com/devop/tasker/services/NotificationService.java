@@ -5,6 +5,7 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Icon;
 import android.os.Build;
@@ -33,12 +34,12 @@ public class NotificationService extends IntentService {
         super(NAME);
     }
 
-    public static Intent newNotification(int taskID) {
-        return newIntent(taskID, ACTION_DELAY);
+    public static Intent newNotification(Context context, int taskID) {
+        return newIntent(context, taskID, ACTION_DELAY);
     }
 
-    protected static Intent newIntent(int taskID, int action) {
-        Intent intent = new Intent();
+    protected static Intent newIntent(Context context, int taskID, int action) {
+        Intent intent = new Intent(context, NotificationService.class);
         intent.putExtra(EXTRA_TASK_ID, taskID);
         intent.putExtra(EXTRA_ACTION, action);
         return intent;
@@ -48,6 +49,8 @@ public class NotificationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         int taskID = intent.getIntExtra(EXTRA_TASK_ID, UNDEFINED);
+
+        Log.e("ACTION", ">>" + intent.getIntExtra(EXTRA_ACTION, -1));
 
         if (taskID != UNDEFINED) {
             TaskDAO task = TaskDAO.findByID(databaseHelper, taskID);
@@ -85,12 +88,12 @@ public class NotificationService extends IntentService {
 
     protected void ShowNotification(TaskDAO task) {
         // Create intents
-        Intent completeIntent = newIntent(task.getId(), ACTION_COMPLETE);
-        Intent delayIntent = newIntent(task.getId(), ACTION_DELAY);
+        Intent completeIntent = newIntent(getApplicationContext(), task.getId(), ACTION_COMPLETE);
+        Intent delayIntent = newIntent(getApplicationContext(), task.getId(), ACTION_DELAY);
 
         // Convert intents to pendingIntents
-        PendingIntent completePendingIntent = PendingIntent.getActivity(this, ACTION_COMPLETE, completeIntent, Intent.FILL_IN_DATA);
-        PendingIntent delayPendingIntent = PendingIntent.getActivity(this, ACTION_DELAY, delayIntent, Intent.FILL_IN_DATA);
+        PendingIntent completePendingIntent = PendingIntent.getService(this, ACTION_COMPLETE, completeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent delayPendingIntent = PendingIntent.getService(this, ACTION_DELAY, delayIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Build the notification
         Notification.Builder builder = new Notification.Builder(this)
@@ -120,8 +123,8 @@ public class NotificationService extends IntentService {
     }
 
     protected void DelayTask(TaskDAO task, DatabaseHelper databaseHelper) {
-        Intent intent = newIntent(task.getId(), ACTION_SHOW_NOTIFICATION);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, ACTION_COMPLETE, intent, Intent.FILL_IN_DATA);
+        Intent intent = newIntent(getApplicationContext(), task.getId(), ACTION_SHOW_NOTIFICATION);
+        PendingIntent pendingIntent = PendingIntent.getService(this, ACTION_COMPLETE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Set the delay based on task status
         long notificationTime = 0;
@@ -158,6 +161,7 @@ public class NotificationService extends IntentService {
 
             case TaskDAO.Status.COMPLETED:
                 Log.d("[Warning]", "Completed task shown notification");
+                RemoveNotification(task.getId());
                 return;
 
         }

@@ -1,5 +1,6 @@
 package com.devop.tasker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.devop.tasker.db.DatabaseHelper;
 import com.devop.tasker.models.Task;
+import com.devop.tasker.services.NotificationService;
 import com.devop.tasker.views.TaskAdapter;
 
 import java.util.ArrayList;
@@ -60,6 +63,9 @@ public class HomeActivity extends AppCompatActivity
         for (int i = 1; i <= 20; i++)
             taskList.add(new Task("Task " + i));
         taskAdapter.setTaskList(taskList);
+
+        Intent serviceIntent = new Intent(this, NotificationService.class);
+        startService(serviceIntent);
     }
 
     @Override

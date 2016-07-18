@@ -69,7 +69,7 @@ public class TaskDAO {
                     cursor.getString(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_TITLE)),
                     cursor.getString(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_DESCRIPTION)),
                     cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_IMPORTANCE)),
-                    cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_DUE_TIME)));
+                    cursor.getLong(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_DUE_TIME)));
 
             taskDAO.id = cursor.getInt(cursor.getColumnIndex(TaskColumns._ID));
             taskDAO.status = cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_STATUS));
