@@ -8,21 +8,37 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <service android:name=".services.NotificationService" />
 
+        <activity
+            android:name=".AddTaskActivity"
+            android:label="@string/title_activity_add_task"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.devop.tasker.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".AddListActivity"
+            android:label="@string/title_activity_add_list"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.devop.tasker.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>
