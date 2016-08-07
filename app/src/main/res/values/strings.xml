@@ -11,7 +11,7 @@
     <string name="task_importance_normal">Normal</string>
     <string name="task_importance_low">Low</string>
 
-    <string name="title_activity_add_task">AddTaskActivity</string>
+    <string name="title_activity_add_task">Add Task</string>
 
     <!-- Add Task -->
     <string name="task_title">Title</string>
@@ -25,5 +25,5 @@
 
     <!-- Add List -->
     <string name="list_add">Add List</string>
-    <string name="title_activity_add_list">AddListActivity</string>
+    <string name="title_activity_add_list">Add List</string>
 </resources>
