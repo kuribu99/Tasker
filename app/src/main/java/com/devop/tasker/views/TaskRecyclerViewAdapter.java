@@ -1,37 +1,41 @@
 package com.devop.tasker.views;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.devop.tasker.R;
+import com.devop.tasker.db.DatabaseHelper;
 import com.devop.tasker.models.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Kong My on 7/7/2016.
  */
-public class TaskAdapter extends RecyclerView.Adapter<AbstractViewHolder>
-        implements AbstractViewHolder.OnTaskDeletedListener {
+public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<AbstractViewHolder>
+        implements AbstractViewHolder.OnTaskActionPerformedListener {
 
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_TASK = 1;
+    private final Context context;
+    private final AbstractViewHolder.OnTaskActionPerformedListener listener;
 
     private List<Task> taskList;
 
-    public TaskAdapter() {
-        this.taskList = new ArrayList<>();
+    public TaskRecyclerViewAdapter(Context context, AbstractViewHolder.OnTaskActionPerformedListener listener) {
+        this.context = context;
+        this.listener = listener;
+        refresh();
     }
 
-    public TaskAdapter(List<Task> taskList) {
-        this.taskList = taskList;
-    }
+    public void refresh() {
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        taskList = Task.findAll(databaseHelper);
+        databaseHelper.close();
 
-    public void setTaskList(List<Task> taskList) {
-        this.taskList = taskList;
-        this.notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -45,8 +49,8 @@ public class TaskAdapter extends RecyclerView.Adapter<AbstractViewHolder>
                 break;
 
             case VIEW_TYPE_TASK:
-                viewHolder = new TaskViewHolder(inflater.inflate(R.layout.task_view_holder, parent, false));
-                viewHolder.setOnTaskDeletedListener(this);
+                viewHolder = new TaskViewHolder(context, inflater.inflate(R.layout.task_view_holder, parent, false));
+                viewHolder.setOnTaskActionPerformedListener(this);
                 break;
         }
 
@@ -78,12 +82,24 @@ public class TaskAdapter extends RecyclerView.Adapter<AbstractViewHolder>
     }
 
     @Override
+    public void onTaskCompleted(Task task) {
+        listener.onTaskCompleted(task);
+    }
+
+    @Override
     public void onTaskDeleted(Task task) {
         int index = taskList.indexOf(task);
         if (index >= 0) {
             taskList.remove(task);
             notifyItemRemoved(index);
+
+            // Escalate to parent listener
+            listener.onTaskDeleted(task);
         }
     }
 
+    public void addTask(Task task) {
+        taskList.add(task);
+        notifyItemInserted(taskList.size() - 1);
+    }
 }

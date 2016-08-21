@@ -4,8 +4,8 @@
     <item android:title="My tasks">
         <menu>
             <item
-                android:title="Add list"
-                android:icon="@drawable/ic_add_black_24dp"/>
+                android:icon="@drawable/ic_add_black_24dp"
+                android:title="Add list" />
         </menu>
     </item>
 
@@ -13,7 +13,6 @@
         <item
             android:id="@+id/nav_task"
             android:title="All tasks" />
-
     </group>
 
 </menu>

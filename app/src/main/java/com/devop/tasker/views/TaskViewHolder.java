@@ -1,5 +1,6 @@
 package com.devop.tasker.views;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -16,11 +17,14 @@ public class TaskViewHolder extends AbstractViewHolder
     private final TextView textboxTaskName;
     private final ImageButton buttonDone;
     private final ImageButton buttonDelete;
+    private final Context context;
 
     private Task bindedTask;
 
-    public TaskViewHolder(View itemView) {
+    public TaskViewHolder(Context context, View itemView) {
         super(itemView);
+
+        this.context = context;
 
         textboxTaskName = (TextView) itemView.findViewById(R.id.textbox_task_name);
         buttonDone = (ImageButton) itemView.findViewById(R.id.button_done);
@@ -33,8 +37,8 @@ public class TaskViewHolder extends AbstractViewHolder
     @Override
     public void bindTask(Task task) {
         bindedTask = task;
-        textboxTaskName.setText(bindedTask.getTaskName());
-        buttonDone.setVisibility(bindedTask.isCompleted() ? View.INVISIBLE : View.VISIBLE);
+        textboxTaskName.setText(bindedTask.getTitle());
+        buttonDone.setVisibility(bindedTask.getStatus() == Task.Status.COMPLETED ? View.INVISIBLE : View.VISIBLE);
     }
 
     @Override
@@ -44,8 +48,9 @@ public class TaskViewHolder extends AbstractViewHolder
 
         switch (v.getId()) {
             case R.id.button_done:
-                bindedTask.setCompleted(true);
-                buttonDone.setVisibility(bindedTask.isCompleted() ? View.INVISIBLE : View.VISIBLE);
+                bindedTask.setStatus(Task.Status.COMPLETED);
+                buttonDone.setVisibility(View.INVISIBLE);
+                listener.onTaskCompleted(bindedTask);
                 break;
 
             case R.id.button_delete:

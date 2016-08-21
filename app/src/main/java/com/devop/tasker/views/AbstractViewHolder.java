@@ -10,7 +10,7 @@ import com.devop.tasker.models.Task;
  */
 public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
 
-    protected OnTaskDeletedListener listener;
+    protected OnTaskActionPerformedListener listener;
 
     public AbstractViewHolder(View itemView) {
         super(itemView);
@@ -20,12 +20,16 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void setOnTaskDeletedListener(OnTaskDeletedListener listener) {
+    public void setOnTaskActionPerformedListener(OnTaskActionPerformedListener listener) {
         this.listener = listener;
     }
 
-    public interface OnTaskDeletedListener {
-        public void onTaskDeleted(Task task);
+    public interface OnTaskActionPerformedListener {
+
+        void onTaskCompleted(Task task);
+
+        void onTaskDeleted(Task task);
+
     }
 
 }

@@ -11,8 +11,8 @@ public final class TaskerContract {
         // Empty constructor
     }
 
-    public static abstract class GroupColumns implements BaseColumns {
-        public static final String TABLE_NAME = "group";
+    public static abstract class TaskGroupColumns implements BaseColumns {
+        public static final String TABLE_NAME = "task_group";
         public static final String COLUMN_NAME_GROUP_NAME = "group_name";
         public static final String COLUMN_NAME_NULLABLE = "";
     }
@@ -25,7 +25,7 @@ public final class TaskerContract {
         public static final String COLUMN_NAME_DUE_TIME = "due_time";
         public static final String COLUMN_NAME_IMPORTANCE = "importance";
         public static final String COLUMN_NAME_STATUS = "status";
-        public static final String COLUMN_NAME_NULLABLE = "description";
+        public static final String COLUMN_NAME_NULLABLE = "description, due_time";
     }
 
 }

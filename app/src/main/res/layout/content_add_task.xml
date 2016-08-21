@@ -1,103 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.devop.tasker.AddTaskActivity"
     tools:showIn="@layout/activity_add_task">
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/task_title"
-        android:hint="@string/task_title"
-        android:layout_margin="3dp"
-        android:background="@drawable/border_text"
-        android:padding="5dp"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:id="@+id/task_description"
-        android:hint="@string/task_description"
-        android:layout_margin="3dp"
-        android:background="@drawable/border_text"
-        android:padding="5dp"/>
-
-    <Switch
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="@string/task_duedate"
-        android:layout_margin="3dp"
-        android:padding="5dp" />
-
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        style="@android:style/Widget.Holo.Spinner"
-        android:id="@+id/date_spinner"/>
-
-    <Switch
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="@string/task_reminder"
-        android:layout_margin="3dp"
-        android:padding="5dp"/>
-
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        style="@android:style/Widget.Holo.Spinner"
-        android:id="@+id/time_spinner"/>
-
-    <Switch
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="@string/task_importance_important"
-        android:layout_margin="3dp"
-        android:padding="5dp"/>
-
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        style="@android:style/Widget.Holo.Spinner"
-        android:id="@+id/important_spinner"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/activity_horizontal_margin">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_ok"
-            android:text="@string/button_ok"
-            android:layout_marginRight="15dp"
-            android:onClick="ok"/>
-
-        <Button
+        <Spinner
+            android:id="@+id/group_spinner"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button_cancel"
-            android:text="@string/button_cancel"
-            android:onClick="cancel"/>
+            android:layout_marginBottom="5dp"
+            android:padding="5dp" />
+
+        <EditText
+            android:id="@+id/task_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/border_text"
+            android:hint="@string/task_title"
+            android:maxLines="1"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/task_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/border_text"
+            android:gravity="top|left"
+            android:hint="@string/task_description"
+            android:minLines="4"
+            android:padding="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:text="@string/task_importance" />
+
+            <Spinner
+                android:id="@+id/importance_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/switch_due_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/task_due_date" />
+
+        <LinearLayout
+            android:id="@+id/layout_due_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/button_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/button_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

@@ -13,7 +13,7 @@ import android.util.Log;
 
 import com.devop.tasker.R;
 import com.devop.tasker.db.DatabaseHelper;
-import com.devop.tasker.models.TaskDAO;
+import com.devop.tasker.models.Task;
 
 /**
  * Created by Kong My on 13/7/2016.
@@ -27,6 +27,7 @@ public class NotificationService extends IntentService {
     public static final int ACTION_SHOW_NOTIFICATION = 0;
     public static final int ACTION_COMPLETE = 1;
     public static final int ACTION_DELAY = 2;
+    public static final int ACTION_REMOVE_NOTIFICATION = 3;
 
     private static final int UNDEFINED = -1;
 
@@ -38,7 +39,11 @@ public class NotificationService extends IntentService {
         return newIntent(context, taskID, ACTION_DELAY);
     }
 
-    protected static Intent newIntent(Context context, int taskID, int action) {
+    public static Intent removeNotification(Context context, int taskID) {
+        return newIntent(context, taskID, ACTION_REMOVE_NOTIFICATION);
+    }
+
+    public static Intent newIntent(Context context, int taskID, int action) {
         Intent intent = new Intent(context, NotificationService.class);
         intent.putExtra(EXTRA_TASK_ID, taskID);
         intent.putExtra(EXTRA_ACTION, action);
@@ -50,14 +55,12 @@ public class NotificationService extends IntentService {
         DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         int taskID = intent.getIntExtra(EXTRA_TASK_ID, UNDEFINED);
 
-        Log.e("ACTION", ">>" + intent.getIntExtra(EXTRA_ACTION, -1));
-
         if (taskID != UNDEFINED) {
-            TaskDAO task = TaskDAO.findByID(databaseHelper, taskID);
+            Task task = Task.findByID(databaseHelper, taskID);
 
             if (task != null) {
 
-                // Handle intent accordingly
+                // Handle actions accordingly
                 switch (intent.getIntExtra(EXTRA_ACTION, UNDEFINED)) {
 
                     case ACTION_SHOW_NOTIFICATION:
@@ -65,13 +68,17 @@ public class NotificationService extends IntentService {
                         break;
 
                     case ACTION_COMPLETE:
-                        task.setStatus(TaskDAO.Status.COMPLETED);
+                        task.setStatus(Task.Status.COMPLETED);
                         task.save(databaseHelper);
                         RemoveNotification(task.getId());
                         break;
 
                     case ACTION_DELAY:
                         DelayTask(task, databaseHelper);
+                        RemoveNotification(task.getId());
+                        break;
+
+                    case ACTION_REMOVE_NOTIFICATION:
                         RemoveNotification(task.getId());
                         break;
 
@@ -86,7 +93,7 @@ public class NotificationService extends IntentService {
         manager.cancel(taskID);
     }
 
-    protected void ShowNotification(TaskDAO task) {
+    protected void ShowNotification(Task task) {
         // Create intents
         Intent completeIntent = newIntent(getApplicationContext(), task.getId(), ACTION_COMPLETE);
         Intent delayIntent = newIntent(getApplicationContext(), task.getId(), ACTION_DELAY);
@@ -122,7 +129,7 @@ public class NotificationService extends IntentService {
         manager.notify(task.getId(), builder.build());
     }
 
-    protected void DelayTask(TaskDAO task, DatabaseHelper databaseHelper) {
+    protected void DelayTask(Task task, DatabaseHelper databaseHelper) {
         Intent intent = newIntent(getApplicationContext(), task.getId(), ACTION_SHOW_NOTIFICATION);
         PendingIntent pendingIntent = PendingIntent.getService(this, ACTION_COMPLETE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -131,11 +138,11 @@ public class NotificationService extends IntentService {
 
         switch (task.getStatus()) {
 
-            case TaskDAO.Status.OVERDUE:
+            case Task.Status.OVERDUE:
                 notificationTime = System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES;
                 break;
 
-            case TaskDAO.Status.PENDING:
+            case Task.Status.PENDING:
                 // The first notification not yet happened
                 if (task.getDueTime() - System.currentTimeMillis() > AlarmManager.INTERVAL_HOUR) {
                     notificationTime = task.getDueTime() - AlarmManager.INTERVAL_HOUR;
@@ -153,21 +160,24 @@ public class NotificationService extends IntentService {
 
                 // The task is now overdue
                 else {
-                    task.setStatus(TaskDAO.Status.OVERDUE);
+                    task.setStatus(Task.Status.OVERDUE);
                     task.save(databaseHelper);
                     notificationTime = System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES;
                 }
                 break;
 
-            case TaskDAO.Status.COMPLETED:
+            case Task.Status.COMPLETED:
                 Log.d("[Warning]", "Completed task shown notification");
                 RemoveNotification(task.getId());
                 return;
-
         }
+
+        Log.e("[Now]", "" + System.currentTimeMillis());
+        Log.e("[Delay]", "" + notificationTime);
 
         // Set the alarm
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         manager.set(AlarmManager.ELAPSED_REALTIME, notificationTime, pendingIntent);
     }
+
 }
