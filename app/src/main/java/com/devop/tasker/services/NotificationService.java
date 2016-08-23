@@ -58,31 +58,45 @@ public class NotificationService extends IntentService {
         if (taskID != UNDEFINED) {
             Task task = Task.findByID(databaseHelper, taskID);
 
-            if (task != null) {
+            // Handle actions accordingly
+            switch (intent.getIntExtra(EXTRA_ACTION, UNDEFINED)) {
 
-                // Handle actions accordingly
-                switch (intent.getIntExtra(EXTRA_ACTION, UNDEFINED)) {
-
-                    case ACTION_SHOW_NOTIFICATION:
+                case ACTION_SHOW_NOTIFICATION:
+                    if (task == null)
+                        Log.d("[Warning]", "Task deleted from database");
+                    else if (task.getStatus() == Task.Status.COMPLETED)
+                        Log.d("[Warning]", "Completed task shown notification");
+                    else
                         ShowNotification(task);
-                        break;
+                    break;
 
-                    case ACTION_COMPLETE:
+                case ACTION_COMPLETE:
+                    if (task == null)
+                        Log.d("[Warning]", "Task deleted from database");
+                    else if (task.getStatus() == Task.Status.COMPLETED)
+                        Log.d("[Warning]", "Completed task shown notification");
+                    else {
                         task.setStatus(Task.Status.COMPLETED);
                         task.save(databaseHelper);
-                        RemoveNotification(task.getId());
-                        break;
+                    }
+                    RemoveNotification(taskID);
+                    break;
 
-                    case ACTION_DELAY:
+                case ACTION_DELAY:
+                    if (task == null)
+                        Log.d("[Warning]", "Task deleted from database");
+                    else if (task.getStatus() == Task.Status.COMPLETED)
+                        Log.d("[Warning]", "Completed task shown notification");
+                    else
                         DelayTask(task, databaseHelper);
-                        RemoveNotification(task.getId());
-                        break;
 
-                    case ACTION_REMOVE_NOTIFICATION:
-                        RemoveNotification(task.getId());
-                        break;
+                    RemoveNotification(taskID);
+                    break;
 
-                }
+                case ACTION_REMOVE_NOTIFICATION:
+                    RemoveNotification(taskID);
+                    break;
+
             }
         }
         databaseHelper.close();
@@ -172,12 +186,11 @@ public class NotificationService extends IntentService {
                 return;
         }
 
-        Log.e("[Now]", "" + System.currentTimeMillis());
-        Log.e("[Delay]", "" + notificationTime);
-
         // Set the alarm
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        manager.set(AlarmManager.ELAPSED_REALTIME, notificationTime, pendingIntent);
+
+        // TODO: use 'notificationTime' in real case
+        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, pendingIntent);
     }
 
 }

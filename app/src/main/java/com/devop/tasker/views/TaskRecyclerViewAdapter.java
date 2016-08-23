@@ -100,6 +100,6 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<AbstractViewHo
 
     public void addTask(Task task) {
         taskList.add(task);
-        notifyItemInserted(taskList.size() - 1);
+        notifyDataSetChanged();
     }
 }

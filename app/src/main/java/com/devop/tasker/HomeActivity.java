@@ -1,5 +1,7 @@
 package com.devop.tasker;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,8 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.devop.tasker.db.DatabaseHelper;
+import com.devop.tasker.models.Group;
 import com.devop.tasker.models.Task;
 import com.devop.tasker.services.NotificationService;
 import com.devop.tasker.views.AbstractViewHolder;
@@ -72,6 +76,7 @@ public class HomeActivity extends AppCompatActivity
             case R.id.action_add_task:
                 startActivityForResult(AddTaskActivity.newIntent(this), AddTaskActivity.REQUEST_CODE_ADD_TASK);
                 break;
+
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -84,13 +89,48 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.nav_task:
+            case R.id.nav_add_group:
+                showAddGroupDialog();
                 break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showAddGroupDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText editText = new EditText(this);
+
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        dialog.dismiss();
+                        break;
+                    case DialogInterface.BUTTON_POSITIVE:
+                        addGroup(editText.getText().toString());
+                        break;
+                }
+            }
+        };
+
+        builder.setMessage(R.string.message_add_group);
+        builder.setView(editText);
+        builder.setPositiveButton(R.string.button_add_group, listener);
+        builder.setNegativeButton(R.string.button_cancel, listener);
+
+        builder.show();
+    }
+
+    private void addGroup(String groupName) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        
+        Group group = new Group(groupName);
+        group.save(databaseHelper);
+        databaseHelper.close();
     }
 
     @Override
@@ -116,6 +156,12 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onTaskCompleted(Task task) {
+        // Update task status
+        task.setStatus(Task.Status.COMPLETED);
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        task.save(databaseHelper);
+        databaseHelper.close();
+
         // Remove remaining notification
         startService(NotificationService.removeNotification(this, task.getId()));
     }

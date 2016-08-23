@@ -48,7 +48,6 @@ public class TaskViewHolder extends AbstractViewHolder
 
         switch (v.getId()) {
             case R.id.button_done:
-                bindedTask.setStatus(Task.Status.COMPLETED);
                 buttonDone.setVisibility(View.INVISIBLE);
                 listener.onTaskCompleted(bindedTask);
                 break;

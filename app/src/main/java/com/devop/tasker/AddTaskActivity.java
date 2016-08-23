@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -16,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.devop.tasker.db.DatabaseHelper;
 import com.devop.tasker.fragments.DatePickerFragment;
@@ -33,7 +36,6 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     public static final int RESULT_CODE_SUCCESS = 1;
     public static final String EXTRA_NEW_TASK = "com.devop.tasker.AddTaskActivity.EXTRA.NEW_TASK";
 
-    private Button saveButton;
     private Spinner groupSpinner;
     private EditText titleEditText;
     private EditText descriptionEditText;
@@ -54,10 +56,8 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_add_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        saveButton = (Button) findViewById(R.id.button_save);
         dateButton = (Button) findViewById(R.id.button_date);
         timeButton = (Button) findViewById(R.id.button_time);
         groupSpinner = (Spinner) findViewById(R.id.group_spinner);
@@ -67,7 +67,6 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         dueDateSwitch = (Switch) findViewById(R.id.switch_due_date);
         dueDateLayout = (LinearLayout) findViewById(R.id.layout_due_date);
 
-        saveButton.setOnClickListener(this);
         dateButton.setOnClickListener(this);
         timeButton.setOnClickListener(this);
 
@@ -81,11 +80,31 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.equals(saveButton)) {
-            save();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_add_task_action, menu);
+        return true;
+    }
 
-        } else if (v.equals(dateButton)) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_save:
+                saveTask();
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+        return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(dateButton)) {
             showDatePicker();
 
         } else if (v.equals(timeButton)) {
@@ -143,34 +162,39 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         dueDateLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
     }
 
-    private void save() {
-        Task task;
-
-        if (dueDateSwitch.isChecked()) {
-            task = new Task(
-                    (int) groupSpinner.getSelectedItemId(),
-                    titleEditText.getText().toString(),
-                    descriptionEditText.getText().toString(),
-                    (int) importanceSpinner.getSelectedItemId(),
-                    reminderCalendar.getTimeInMillis());
+    private void saveTask() {
+        if (titleEditText.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Title cannot be empty", Toast.LENGTH_SHORT).show();
 
         } else {
-            task = new Task(
-                    (int) groupSpinner.getSelectedItemId(),
-                    titleEditText.getText().toString(),
-                    descriptionEditText.getText().toString(),
-                    (int) importanceSpinner.getSelectedItemId());
+            Task task;
+
+            if (dueDateSwitch.isChecked()) {
+                task = new Task(
+                        (int) groupSpinner.getSelectedItemId(),
+                        titleEditText.getText().toString(),
+                        descriptionEditText.getText().toString(),
+                        (int) importanceSpinner.getSelectedItemId(),
+                        reminderCalendar.getTimeInMillis());
+
+            } else {
+                task = new Task(
+                        (int) groupSpinner.getSelectedItemId(),
+                        titleEditText.getText().toString(),
+                        descriptionEditText.getText().toString(),
+                        (int) importanceSpinner.getSelectedItemId());
+            }
+
+            DatabaseHelper databaseHelper = new DatabaseHelper(this);
+            task.save(databaseHelper);
+            databaseHelper.close();
+
+            Intent data = new Intent();
+            data.putExtra(EXTRA_NEW_TASK, task);
+            setResult(RESULT_CODE_SUCCESS, data);
+
+            finish();
         }
-
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        task.save(databaseHelper);
-        databaseHelper.close();
-
-        Intent data = new Intent();
-        data.putExtra(EXTRA_NEW_TASK, task);
-        setResult(RESULT_CODE_SUCCESS, data);
-
-        finish();
     }
 
 }
