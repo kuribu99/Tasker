@@ -44,7 +44,7 @@ public class Task implements Serializable {
     }
 
     public Task(int groupID, String title, String description, int importance) {
-        this(NO_GROUP, title, description, importance, NO_DUE);
+        this(groupID, title, description, importance, NO_DUE);
     }
 
     public Task(int groupID, String title, String description, int importance, long dueTime) {
@@ -84,33 +84,38 @@ public class Task implements Serializable {
     }
 
     public static List<Task> findByGroup(DatabaseHelper databaseHelper, int searchGroupID) {
-        List<Task> tasks = new ArrayList<>();
-        Task task;
+        if (searchGroupID == Group.ALL_TASK_GROUP_ID)
+            return findAll(databaseHelper);
 
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        Cursor cursor = db.query(
-                TaskColumns.TABLE_NAME,
-                null,
-                WHERE_CLAUSE_BY_GROUP_ID,
-                new String[]{String.valueOf(searchGroupID)},
-                null, null, null);
+        else {
+            List<Task> tasks = new ArrayList<>();
+            Task task;
 
-        while (cursor.moveToNext()) {
-            task = new Task(
-                    cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_GROUP_ID)),
-                    cursor.getString(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_TITLE)),
-                    cursor.getString(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_DESCRIPTION)),
-                    cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_IMPORTANCE)),
-                    cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_DUE_TIME)));
+            SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            Cursor cursor = db.query(
+                    TaskColumns.TABLE_NAME,
+                    null,
+                    WHERE_CLAUSE_BY_GROUP_ID,
+                    new String[]{String.valueOf(searchGroupID)},
+                    null, null, null);
 
-            task.id = cursor.getInt(cursor.getColumnIndex(TaskColumns._ID));
-            task.status = cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_STATUS));
+            while (cursor.moveToNext()) {
+                task = new Task(
+                        cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_GROUP_ID)),
+                        cursor.getString(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_DESCRIPTION)),
+                        cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_IMPORTANCE)),
+                        cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_DUE_TIME)));
 
-            tasks.add(task);
+                task.id = cursor.getInt(cursor.getColumnIndex(TaskColumns._ID));
+                task.status = cursor.getInt(cursor.getColumnIndex(TaskColumns.COLUMN_NAME_STATUS));
+
+                tasks.add(task);
+            }
+            cursor.close();
+
+            return tasks;
         }
-        cursor.close();
-
-        return tasks;
     }
 
     public static List<Task> findAll(DatabaseHelper databaseHelper) {

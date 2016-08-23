@@ -23,8 +23,9 @@ import android.widget.Toast;
 import com.devop.tasker.db.DatabaseHelper;
 import com.devop.tasker.fragments.DatePickerFragment;
 import com.devop.tasker.fragments.TimePickerFragment;
+import com.devop.tasker.models.Group;
 import com.devop.tasker.models.Task;
-import com.devop.tasker.views.GroupAdapter;
+import com.devop.tasker.views.GroupDropdownAdapter;
 import com.devop.tasker.views.ImportanceLevelAdapter;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +35,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
 
     public static final int REQUEST_CODE_ADD_TASK = 1;
     public static final int RESULT_CODE_SUCCESS = 1;
+    public static final String EXTRA_SELECTED_GROUP = "com.devop.tasker.AddTaskActivity.EXTRA.SELECTED_GROUP";
     public static final String EXTRA_NEW_TASK = "com.devop.tasker.AddTaskActivity.EXTRA.NEW_TASK";
 
     private Spinner groupSpinner;
@@ -46,8 +48,10 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     private Button timeButton;
     private Calendar reminderCalendar;
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, AddTaskActivity.class);
+    public static Intent newIntent(Context context, int groupID) {
+        Intent intent = new Intent(context, AddTaskActivity.class);
+        intent.putExtra(EXTRA_SELECTED_GROUP, groupID);
+        return intent;
     }
 
     @Override
@@ -58,6 +62,10 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Get selected group id from intent
+        int selectedGroupID = getIntent().getIntExtra(EXTRA_SELECTED_GROUP, Group.ALL_TASK_GROUP_ID);
+
+        // find view items
         dateButton = (Button) findViewById(R.id.button_date);
         timeButton = (Button) findViewById(R.id.button_time);
         groupSpinner = (Spinner) findViewById(R.id.group_spinner);
@@ -67,15 +75,28 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         dueDateSwitch = (Switch) findViewById(R.id.switch_due_date);
         dueDateLayout = (LinearLayout) findViewById(R.id.layout_due_date);
 
+        // Add listener to buttons and switches
         dateButton.setOnClickListener(this);
         timeButton.setOnClickListener(this);
-
-        groupSpinner.setAdapter(new GroupAdapter(this));
-        importanceSpinner.setAdapter(new ImportanceLevelAdapter(this));
-
         dueDateSwitch.setOnCheckedChangeListener(this);
 
+        // Initialize group dropdown list
+        GroupDropdownAdapter groupDropdownAdapter = new GroupDropdownAdapter(this);
+        groupSpinner.setAdapter(groupDropdownAdapter);
+
+        // Set selected from group id
+        groupSpinner.setSelection(groupDropdownAdapter.getPositionFromID(selectedGroupID));
+
+        // Initialize importance spinner
+        importanceSpinner.setAdapter(new ImportanceLevelAdapter(this));
+
+        // Select"Normal" as default
+        importanceSpinner.setSelection(1);
+
+        // Initialize calender
         reminderCalendar = Calendar.getInstance();
+
+        // Update button to show current date/timeF
         updateButtons();
     }
 

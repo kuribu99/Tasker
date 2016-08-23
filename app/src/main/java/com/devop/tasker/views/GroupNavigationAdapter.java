@@ -16,12 +16,12 @@ import java.util.List;
 /**
  * Created by Kong My on 21/8/2016.
  */
-public class GroupAdapter extends BaseAdapter {
+public class GroupNavigationAdapter extends BaseAdapter {
 
     private final Context context;
     private List<Group> groupList;
 
-    public GroupAdapter(Context context) {
+    public GroupNavigationAdapter(Context context) {
         this.context = context;
         refresh();
     }
@@ -34,17 +34,23 @@ public class GroupAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return groupList.size();
+        return groupList.size() + 1;
     }
 
     @Override
     public Object getItem(int position) {
-        return groupList.get(position);
+        if (position == 0)
+            return Group.ALL_TASK_GROUP;
+        else
+            return groupList.get(position - 1);
     }
 
     @Override
     public long getItemId(int position) {
-        return groupList.get(position).getId();
+        if (position == 0)
+            return Group.ALL_TASK_GROUP_ID;
+        else
+            return groupList.get(position - 1).getId();
     }
 
     @Override
@@ -53,13 +59,35 @@ public class GroupAdapter extends BaseAdapter {
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.list_item_task_group, parent, false);
+            view = inflater.inflate(R.layout.list_item_nav_group, parent, false);
             view.setTag(view.findViewById(R.id.text_view));
         }
 
         TextView textView = (TextView) view.getTag();
-        textView.setText(groupList.get(position).getGroupName());
+        textView.setText(((Group) getItem(position)).getGroupName());
 
         return view;
+    }
+
+    public void addGroup(Group group) {
+        groupList.add(group);
+        notifyDataSetChanged();
+    }
+
+    public boolean hasGroupName(String groupName) {
+        groupName = groupName.toLowerCase();
+
+        for (Group group : groupList)
+            if (group.getGroupName().toLowerCase().equals(groupName))
+                return true;
+
+        return false;
+    }
+
+    public void removeGroupAt(int position) {
+        if (position > 0) {
+            groupList.remove(position - 1);
+            notifyDataSetChanged();
+        }
     }
 }

@@ -4,8 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.devop.tasker.db.TaskerContract.TaskGroupColumns;
+import com.devop.tasker.models.Group;
+
 import static com.devop.tasker.db.TaskerContract.TaskColumns;
+import static com.devop.tasker.db.TaskerContract.TaskGroupColumns;
 
 /**
  * Created by Kong My on 11/7/2016.
@@ -31,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ")";
 
     private static final String SQL_INSERT_DEFAULT_GROUP = "INSERT INTO " + TaskGroupColumns.TABLE_NAME + "(" +
-            TaskGroupColumns.COLUMN_NAME_GROUP_NAME + ") VALUES ('Default')";
+            TaskGroupColumns.COLUMN_NAME_GROUP_NAME + ") VALUES ('" + Group.DEFAULT_GROUP_NAME + "')";
 
     private static final String SQL_DROP_TABLE_TASK = "DROP TABLE " + TaskColumns.TABLE_NAME;
     private static final String SQL_DROP_TABLE_GROUP = "DROP TABLE " + TaskGroupColumns.TABLE_NAME;

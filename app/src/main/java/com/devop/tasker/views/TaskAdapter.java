@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.devop.tasker.R;
 import com.devop.tasker.db.DatabaseHelper;
+import com.devop.tasker.models.Group;
 import com.devop.tasker.models.Task;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by Kong My on 7/7/2016.
  */
-public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<AbstractViewHolder>
+public class TaskAdapter extends RecyclerView.Adapter<AbstractViewHolder>
         implements AbstractViewHolder.OnTaskActionPerformedListener {
 
     private static final int VIEW_TYPE_EMPTY = 0;
@@ -24,17 +25,20 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<AbstractViewHo
 
     private List<Task> taskList;
 
-    public TaskRecyclerViewAdapter(Context context, AbstractViewHolder.OnTaskActionPerformedListener listener) {
+    public TaskAdapter(Context context, AbstractViewHolder.OnTaskActionPerformedListener listener) {
         this.context = context;
         this.listener = listener;
-        refresh();
     }
 
-    public void refresh() {
+    public void refresh(int groupID) {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
-        taskList = Task.findAll(databaseHelper);
-        databaseHelper.close();
 
+        if (groupID == Group.ALL_TASK_GROUP_ID)
+            taskList = Task.findAll(databaseHelper);
+        else
+            taskList = Task.findByGroup(databaseHelper, groupID);
+
+        databaseHelper.close();
         notifyDataSetChanged();
     }
 

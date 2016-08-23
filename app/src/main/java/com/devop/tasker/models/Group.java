@@ -17,10 +17,21 @@ import java.util.List;
 public class Group implements Serializable {
 
     // Default values
+    public static final int ALL_TASK_GROUP_ID = -2;
     public static final int NEW_ID = -1;
+
+    // Static group that contains all task
+    public static final Group ALL_TASK_GROUP;
+    public static final String DEFAULT_GROUP_NAME = "Default";
 
     // SQL clauses
     private static final String WHERE_CLAUSE_BY_ID = TaskerContract.TaskGroupColumns._ID + " = ?";
+
+    // Initialize ALL_TASK_GROUP
+    static {
+        ALL_TASK_GROUP = new Group("All Tasks");
+        ALL_TASK_GROUP.id = ALL_TASK_GROUP_ID;
+    }
 
     // Fields
     private int id;
@@ -36,22 +47,27 @@ public class Group implements Serializable {
     }
 
     public static Group findByID(DatabaseHelper databaseHelper, int id) {
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        Cursor cursor = db.query(
-                TaskerContract.TaskGroupColumns.TABLE_NAME,
-                null,
-                WHERE_CLAUSE_BY_ID,
-                new String[]{String.valueOf(id)},
-                null, null, null);
+        if (id == ALL_TASK_GROUP_ID)
+            return ALL_TASK_GROUP;
 
-        Group group = null;
-        if (cursor.moveToFirst()) {
-            group = new Group(cursor.getString(cursor.getColumnIndex(TaskerContract.TaskGroupColumns.COLUMN_NAME_GROUP_NAME)));
-            group.id = cursor.getInt(cursor.getColumnIndex(TaskerContract.TaskGroupColumns._ID));
+        else {
+            SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            Cursor cursor = db.query(
+                    TaskerContract.TaskGroupColumns.TABLE_NAME,
+                    null,
+                    WHERE_CLAUSE_BY_ID,
+                    new String[]{String.valueOf(id)},
+                    null, null, null);
+
+            Group group = null;
+            if (cursor.moveToFirst()) {
+                group = new Group(cursor.getString(cursor.getColumnIndex(TaskerContract.TaskGroupColumns.COLUMN_NAME_GROUP_NAME)));
+                group.id = cursor.getInt(cursor.getColumnIndex(TaskerContract.TaskGroupColumns._ID));
+            }
+            cursor.close();
+
+            return group;
         }
-        cursor.close();
-
-        return group;
     }
 
     public static List<Group> findAll(DatabaseHelper databaseHelper) {
@@ -68,7 +84,6 @@ public class Group implements Serializable {
         cursor.close();
 
         return groupList;
-
     }
 
     public List<Task> getTasks(DatabaseHelper databaseHelper) {
@@ -83,10 +98,6 @@ public class Group implements Serializable {
         return groupName;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
     public void save(DatabaseHelper databaseHelper) {
         ContentValues values = new ContentValues();
         values.put(TaskerContract.TaskGroupColumns.COLUMN_NAME_GROUP_NAME, groupName);
@@ -96,6 +107,13 @@ public class Group implements Serializable {
             id = (int) db.insert(TaskerContract.TaskGroupColumns.TABLE_NAME, TaskerContract.TaskGroupColumns.COLUMN_NAME_NULLABLE, values);
         } else {
             db.update(TaskerContract.TaskGroupColumns.TABLE_NAME, values, WHERE_CLAUSE_BY_ID, new String[]{String.valueOf(id)});
+        }
+    }
+
+    public void delete(DatabaseHelper databaseHelper) {
+        if (id > 0) {
+            SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            db.delete(TaskerContract.TaskGroupColumns.TABLE_NAME, WHERE_CLAUSE_BY_ID, new String[]{String.valueOf(id)});
         }
     }
 }
