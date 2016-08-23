@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#607D8B</color>
-    <color name="colorPrimaryDark">#546E7A</color>
-    <color name="colorAccent">#78909C</color>
+    <color name="colorPrimary">#4527a0</color>
+    <color name="colorPrimaryDark">#512da8</color>
+    <color name="colorAccent">#5e35b1</color>
 
     <!-- border_text -->
     <color name="colorBorder">#9E9E9E</color>
 
     <!-- nav_header_home -->
     <color name="colorText">#FFFFFF</color>
+
+    <!-- Important text -->
+    <color name="colorImportance">#000000</color>
 </resources>

@@ -20,7 +20,7 @@
         android:id="@+id/button_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_light"
+        android:background="@android:color/holo_purple"
         android:padding="4dp"
         android:src="@drawable/ic_done_white_24dp" />
 
@@ -28,7 +28,7 @@
         android:id="@+id/button_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_red_light"
+        android:background="@android:color/holo_orange_light"
         android:padding="4dp"
         android:src="@drawable/ic_clear_white_24dp" />
 
