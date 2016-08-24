@@ -47,6 +47,14 @@ public class HomeActivity extends AppCompatActivity
     // Private field to store current viewed group
     private int groupID;
 
+    public static void tintMenuIcon(Context context, MenuItem item, @ColorRes int color) {
+        Drawable normalDrawable = item.getIcon();
+        Drawable wrapDrawable = DrawableCompat.wrap(normalDrawable);
+        DrawableCompat.setTint(wrapDrawable, context.getResources().getColor(color));
+
+        item.setIcon(wrapDrawable);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,14 +117,6 @@ public class HomeActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    public static void tintMenuIcon(Context context, MenuItem item, @ColorRes int color) {
-        Drawable normalDrawable = item.getIcon();
-        Drawable wrapDrawable = DrawableCompat.wrap(normalDrawable);
-        DrawableCompat.setTint(wrapDrawable, context.getResources().getColor(color));
-
-        item.setIcon(wrapDrawable);
     }
 
     @Override
@@ -185,7 +185,10 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onTaskClicked(Task task) {
-        startActivity(ViewTaskActivity.newIntent(this, task));
+        if (task == null)
+            startActivity(AddTaskActivity.newIntent(this, groupID));
+        else
+            startActivity(ViewTaskActivity.newIntent(this, task));
     }
 
     @Override

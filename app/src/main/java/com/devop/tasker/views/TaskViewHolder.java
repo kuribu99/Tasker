@@ -19,14 +19,11 @@ public class TaskViewHolder extends AbstractViewHolder
     private final TextView textboxTaskName;
     private final ImageButton buttonDone;
     private final ImageButton buttonDelete;
-    private final Context context;
 
     private Task bindedTask;
 
     public TaskViewHolder(Context context, View itemView) {
         super(itemView);
-
-        this.context = context;
 
         taskViewLayout = (LinearLayout) itemView.findViewById(R.id.task_view_layout);
         textboxTaskName = (TextView) itemView.findViewById(R.id.textbox_task_name);

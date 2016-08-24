@@ -54,9 +54,9 @@ public class TaskAdapter extends RecyclerView.Adapter<AbstractViewHolder>
 
             case VIEW_TYPE_TASK:
                 viewHolder = new TaskViewHolder(context, inflater.inflate(R.layout.task_view_holder, parent, false));
-                viewHolder.setOnTaskActionPerformedListener(this);
                 break;
         }
+        viewHolder.setOnTaskActionPerformedListener(this);
 
         return viewHolder;
     }
