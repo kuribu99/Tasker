@@ -12,4 +12,8 @@
 
     <!-- Important text -->
     <color name="colorImportance">#000000</color>
+
+    <color name="colorTaskImportanceLow">#ddbbbbcc</color>
+    <color name="colorTaskImportanceNormal">#FF6600</color>
+    <color name="colorTaskImportanceImportant">#FF0000</color>
 </resources>
