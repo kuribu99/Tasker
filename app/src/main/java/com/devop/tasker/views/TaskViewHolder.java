@@ -33,6 +33,7 @@ public class TaskViewHolder extends AbstractViewHolder
         buttonDone = (ImageButton) itemView.findViewById(R.id.button_done);
         buttonDelete = (ImageButton) itemView.findViewById(R.id.button_delete);
 
+        taskViewLayout.setOnClickListener(this);
         buttonDone.setOnClickListener(this);
         buttonDelete.setOnClickListener(this);
     }
@@ -96,6 +97,10 @@ public class TaskViewHolder extends AbstractViewHolder
         if (bindedTask == null) return;
 
         switch (v.getId()) {
+            case R.id.task_view_layout:
+                listener.onTaskClicked(bindedTask);
+                break;
+
             case R.id.button_done:
                 buttonDone.setVisibility(View.INVISIBLE);
                 listener.onTaskCompleted(bindedTask);

@@ -31,7 +31,7 @@
                 android:value="com.devop.tasker.HomeActivity" />
         </activity>
         <activity
-            android:name=".AddListActivity"
+            android:name=".ViewTaskActivity"
             android:label="@string/title_activity_add_list"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">

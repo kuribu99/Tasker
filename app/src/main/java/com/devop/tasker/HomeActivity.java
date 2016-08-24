@@ -165,6 +165,11 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
+    public void onTaskClicked(Task task) {
+        startActivity(ViewTaskActivity.newIntent(this, task));
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         showGroupTasks(position, id);
         closeDrawer();

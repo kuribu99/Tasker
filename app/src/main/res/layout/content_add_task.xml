@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.devop.tasker.AddTaskActivity"
     tools:showIn="@layout/activity_add_task">
@@ -49,8 +49,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="15dp">
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
@@ -60,7 +60,7 @@
                 android:layout_weight="1"
                 android:padding="5dp"
                 android:text="@string/task_importance"
-                android:textColor="@color/colorImportance"/>
+                android:textColor="@color/colorImportance" />
 
             <Spinner
                 android:id="@+id/importance_spinner"

@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.devop.tasker.AddTaskActivity">
+    tools:context="com.devop.tasker.ViewTaskActivity">
 
     <include layout="@layout/app_bar" />
 
-    <include layout="@layout/content_add_task" />
+    <include layout="@layout/content_view_task" />
 
 </android.support.design.widget.CoordinatorLayout>

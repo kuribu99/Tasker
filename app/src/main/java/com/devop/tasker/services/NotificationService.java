@@ -114,7 +114,7 @@ public class NotificationService extends IntentService {
 
         // Convert intents to pendingIntents
         PendingIntent completePendingIntent = PendingIntent.getService(this, task.getId(), completeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        PendingIntent delayPendingIntent = PendingIntent.getService(this, task.getId(), delayIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent delayPendingIntent = PendingIntent.getService(this, -1 * task.getId(), delayIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Build the notification
         Notification.Builder builder = new Notification.Builder(this)

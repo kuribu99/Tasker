@@ -30,6 +30,8 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
 
         void onTaskDeleted(Task task);
 
+        void onTaskClicked(Task task);
+
     }
 
 }

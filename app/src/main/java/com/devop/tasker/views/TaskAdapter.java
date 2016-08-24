@@ -102,6 +102,11 @@ public class TaskAdapter extends RecyclerView.Adapter<AbstractViewHolder>
         }
     }
 
+    @Override
+    public void onTaskClicked(Task task) {
+        listener.onTaskClicked(task);
+    }
+
     public void addTask(Task task) {
         taskList.add(task);
         notifyDataSetChanged();
