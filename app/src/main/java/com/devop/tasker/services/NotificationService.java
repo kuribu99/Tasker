@@ -113,8 +113,8 @@ public class NotificationService extends IntentService {
         Intent delayIntent = newIntent(getApplicationContext(), task.getId(), ACTION_DELAY);
 
         // Convert intents to pendingIntents
-        PendingIntent completePendingIntent = PendingIntent.getService(this, ACTION_COMPLETE, completeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        PendingIntent delayPendingIntent = PendingIntent.getService(this, ACTION_DELAY, delayIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent completePendingIntent = PendingIntent.getService(this, task.getId(), completeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent delayPendingIntent = PendingIntent.getService(this, task.getId(), delayIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Build the notification
         Notification.Builder builder = new Notification.Builder(this)
@@ -145,7 +145,7 @@ public class NotificationService extends IntentService {
 
     protected void DelayTask(Task task, DatabaseHelper databaseHelper) {
         Intent intent = newIntent(getApplicationContext(), task.getId(), ACTION_SHOW_NOTIFICATION);
-        PendingIntent pendingIntent = PendingIntent.getService(this, ACTION_COMPLETE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getService(this, task.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Set the delay based on task status
         long notificationTime = 0;
@@ -189,8 +189,10 @@ public class NotificationService extends IntentService {
         // Set the alarm
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        // TODO: use 'notificationTime' in real case
-        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, pendingIntent);
+        // Comment the following line in real usage
+        notificationTime = System.currentTimeMillis() + 3000;
+
+        manager.set(AlarmManager.RTC_WAKEUP, notificationTime, pendingIntent);
     }
 
 }

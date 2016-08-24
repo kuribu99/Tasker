@@ -218,6 +218,7 @@ public class HomeActivity extends AppCompatActivity
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText editText = new EditText(this);
 
+        editText.setMaxLines(1);
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
