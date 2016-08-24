@@ -119,23 +119,23 @@ public class NotificationService extends IntentService {
         // Build the notification
         Notification.Builder builder = new Notification.Builder(this)
                 .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_menu_send)
+                .setSmallIcon(R.drawable.ic_assignment_turned_in_black_24dp)
                 .setContentTitle(task.getTitle())
                 .setContentText(task.getDescription());
 
         // Add action based on Android version
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             builder.addAction(new Notification.Action.Builder(
-                    Icon.createWithResource(getApplicationContext(), R.drawable.ic_menu_send),
+                    Icon.createWithResource(getApplicationContext(), R.drawable.ic_done_black_24dp),
                     "Completed",
                     completePendingIntent).build());
             builder.addAction(new Notification.Action.Builder(
-                    Icon.createWithResource(getApplicationContext(), R.drawable.ic_menu_camera),
+                    Icon.createWithResource(getApplicationContext(), R.drawable.ic_schedule_black_24dp),
                     "Delay",
                     delayPendingIntent).build());
         } else {
-            builder.addAction(new Notification.Action(R.drawable.ic_menu_send, "Completed", completePendingIntent));
-            builder.addAction(new Notification.Action(R.drawable.ic_menu_camera, "Delay", delayPendingIntent));
+            builder.addAction(new Notification.Action(R.drawable.ic_done_black_24dp, "Completed", completePendingIntent));
+            builder.addAction(new Notification.Action(R.drawable.ic_schedule_black_24dp, "Delay", delayPendingIntent));
         }
 
         // Show the notification
