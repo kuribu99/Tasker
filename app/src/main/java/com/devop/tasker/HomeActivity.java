@@ -1,9 +1,13 @@
 package com.devop.tasker;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -107,10 +111,25 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
+    public static void tintMenuIcon(Context context, MenuItem item, @ColorRes int color) {
+        Drawable normalDrawable = item.getIcon();
+        Drawable wrapDrawable = DrawableCompat.wrap(normalDrawable);
+        DrawableCompat.setTint(wrapDrawable, context.getResources().getColor(color));
+
+        item.setIcon(wrapDrawable);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_home_action, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_add_task);
+
+        if (menuItem != null) {
+            tintMenuIcon(HomeActivity.this, menuItem, android.R.color.white);
+        }
+
         return true;
     }
 
