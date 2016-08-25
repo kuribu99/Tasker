@@ -183,7 +183,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
 
     private void saveTask() {
         if (titleEditText.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Title cannot be empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.message_title_required, Toast.LENGTH_SHORT).show();
 
         } else {
             Task task;

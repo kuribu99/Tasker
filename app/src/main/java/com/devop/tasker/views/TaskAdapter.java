@@ -49,11 +49,11 @@ public class TaskAdapter extends RecyclerView.Adapter<AbstractViewHolder>
 
         switch (viewType) {
             case VIEW_TYPE_EMPTY:
-                viewHolder = new EmptyViewHolder(inflater.inflate(R.layout.empty_task_view_holder, parent, false));
+                viewHolder = new EmptyViewHolder(inflater.inflate(R.layout.view_holder_empty, parent, false));
                 break;
 
             case VIEW_TYPE_TASK:
-                viewHolder = new TaskViewHolder(context, inflater.inflate(R.layout.task_view_holder, parent, false));
+                viewHolder = new TaskViewHolder(context, inflater.inflate(R.layout.view_holder_task, parent, false));
                 break;
         }
         viewHolder.setOnTaskActionPerformedListener(this);

@@ -21,8 +21,8 @@ import com.devop.tasker.models.Task;
 public class NotificationService extends IntentService {
 
     public static final String NAME = "NotificationService";
-    public static final String EXTRA_TASK_ID = "com.devop.tasker.services.NotificationService.extra.taskID";
-    public static final String EXTRA_ACTION = "com.devop.tasker.services.NotificationService.extra.action";
+    public static final String EXTRA_TASK_ID = "com.devop.tasker.services.NotificationService.EXTRA.TASK_ID";
+    public static final String EXTRA_ACTION = "com.devop.tasker.services.NotificationService.EXTRA.ACTION";
 
     public static final int ACTION_SHOW_NOTIFICATION = 0;
     public static final int ACTION_COMPLETE = 1;
@@ -58,45 +58,37 @@ public class NotificationService extends IntentService {
         if (taskID != UNDEFINED) {
             Task task = Task.findByID(databaseHelper, taskID);
 
-            // Handle actions accordingly
-            switch (intent.getIntExtra(EXTRA_ACTION, UNDEFINED)) {
+            if (task == null)
+                Log.d("[Warning]", "Task deleted from database");
 
-                case ACTION_SHOW_NOTIFICATION:
-                    if (task == null)
-                        Log.d("[Warning]", "Task deleted from database");
-                    else if (task.getStatus() == Task.Status.COMPLETED)
-                        Log.d("[Warning]", "Completed task show notification");
-                    else
+            else if (task.getStatus() == Task.Status.COMPLETED)
+                Log.d("[Warning]", "Completed task show notification");
+
+            else {
+                // Handle actions accordingly
+                switch (intent.getIntExtra(EXTRA_ACTION, UNDEFINED)) {
+
+                    case ACTION_SHOW_NOTIFICATION:
                         ShowNotification(task);
-                    break;
+                        break;
 
-                case ACTION_COMPLETE:
-                    if (task == null)
-                        Log.d("[Warning]", "Task deleted from database");
-                    else if (task.getStatus() == Task.Status.COMPLETED)
-                        Log.d("[Warning]", "Completed task show notification");
-                    else {
+                    case ACTION_COMPLETE:
                         task.setStatus(Task.Status.COMPLETED);
                         task.save(databaseHelper);
-                    }
-                    RemoveNotification(taskID);
-                    break;
+                        RemoveNotification(taskID);
+                        break;
 
-                case ACTION_DELAY:
-                    if (task == null)
-                        Log.d("[Warning]", "Task deleted from database");
-                    else if (task.getStatus() == Task.Status.COMPLETED)
-                        Log.d("[Warning]", "Completed task show notification");
-                    else
+                    case ACTION_DELAY:
                         DelayTask(task, databaseHelper);
 
-                    RemoveNotification(taskID);
-                    break;
+                        RemoveNotification(taskID);
+                        break;
 
-                case ACTION_REMOVE_NOTIFICATION:
-                    RemoveNotification(taskID);
-                    break;
+                    case ACTION_REMOVE_NOTIFICATION:
+                        RemoveNotification(taskID);
+                        break;
 
+                }
             }
         }
         databaseHelper.close();
@@ -125,17 +117,27 @@ public class NotificationService extends IntentService {
 
         // Add action based on Android version
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
             builder.addAction(new Notification.Action.Builder(
                     Icon.createWithResource(getApplicationContext(), R.drawable.ic_done_black_24dp),
-                    "Completed",
+                    getResources().getString(R.string.action_complete_task),
                     completePendingIntent).build());
+
             builder.addAction(new Notification.Action.Builder(
                     Icon.createWithResource(getApplicationContext(), R.drawable.ic_schedule_black_24dp),
-                    "Delay",
+                    getResources().getString(R.string.action_delay_task),
                     delayPendingIntent).build());
         } else {
-            builder.addAction(new Notification.Action(R.drawable.ic_done_black_24dp, "Completed", completePendingIntent));
-            builder.addAction(new Notification.Action(R.drawable.ic_schedule_black_24dp, "Delay", delayPendingIntent));
+
+            builder.addAction(new Notification.Action(
+                    R.drawable.ic_done_black_24dp,
+                    getResources().getString(R.string.action_complete_task),
+                    completePendingIntent));
+
+            builder.addAction(new Notification.Action(
+                    R.drawable.ic_schedule_black_24dp,
+                    getResources().getString(R.string.action_delay_task),
+                    delayPendingIntent));
         }
 
         // Show the notification

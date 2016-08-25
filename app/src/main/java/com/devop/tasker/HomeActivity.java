@@ -112,7 +112,6 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
         refreshTasks();
     }
 
@@ -210,9 +209,9 @@ public class HomeActivity extends AppCompatActivity
 
         int message;
         if (position == 0)
-            message = R.string.delete_all_task;
+            message = R.string.message_delete_all_task;
         else
-            message = R.string.delete_group;
+            message = R.string.message_delete_group;
 
         builder.setMessage(message);
         builder.setPositiveButton(R.string.button_yes, listener);
@@ -241,9 +240,9 @@ public class HomeActivity extends AppCompatActivity
                     case DialogInterface.BUTTON_POSITIVE:
                         String groupName = editText.getText().toString();
                         if (groupName.isEmpty())
-                            Toast.makeText(HomeActivity.this, "Group name cannot be empty", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HomeActivity.this, R.string.message_group_name_required, Toast.LENGTH_SHORT).show();
                         else if (groupAdapter.hasGroupName(groupName))
-                            Toast.makeText(HomeActivity.this, "Group name already exist", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HomeActivity.this, R.string.message_group_name_exist, Toast.LENGTH_SHORT).show();
                         else
                             addGroup(groupName);
                         break;
@@ -285,7 +284,7 @@ public class HomeActivity extends AppCompatActivity
 
         // Delete the all group except Default
         if (group.getGroupName().equals(Group.DEFAULT_GROUP_NAME))
-            Toast.makeText(this, "Default group cannot be deleted but all task in this group are removed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.message_removing_default_group, Toast.LENGTH_SHORT).show();
         else {
             group.delete(databaseHelper);
             groupAdapter.removeGroupAt(position);

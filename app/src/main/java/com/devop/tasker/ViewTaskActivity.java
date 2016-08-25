@@ -43,11 +43,11 @@ public class ViewTaskActivity extends AppCompatActivity {
         task = (Task) getIntent().getSerializableExtra(EXTRA_TASK);
 
         if (task == null) {
-            Toast.makeText(this, "Invalid task", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.message_invalid_task, Toast.LENGTH_SHORT).show();
             finish();
 
         } else {
-            String dueDateStr = "No due date";
+            String dueDateStr = getResources().getString(R.string.message_no_due_date);
             if (task.getDueTime() != Task.NO_DUE) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
                 Calendar calendar = Calendar.getInstance();

@@ -1,43 +1,55 @@
 <resources>
+    <!-- App -->
     <string name="app_name">Tasker</string>
 
+    <!-- Navigation drawer action -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- Actions -->
     <string name="action_add_task">Add Task</string>
+    <string name="action_complete_task">Done</string>
+    <string name="action_delete_task">Delete</string>
+    <string name="action_delay_task">Delay</string>
+    <string name="action_save">Save</string>
+
+    <!-- Activity Titles -->
+    <string name="title_activity_add_task">Add Task</string>
+    <string name="title_activity_view_list">View Task</string>
+
+    <!-- Task fields -->
+    <string name="task_title">Title</string>
+    <string name="task_description">Description</string>
+    <string name="task_due_date">Due Date</string>
 
     <!-- Task.Importance -->
+    <string name="task_importance">Importance Level</string>
     <string name="task_importance_important">Important</string>
     <string name="task_importance_normal">Normal</string>
     <string name="task_importance_low">Low</string>
 
-    <string name="title_activity_add_task">Add Task</string>
-
-    <!-- Add Task -->
-    <string name="task_title">Title</string>
-    <string name="task_description">Description</string>
-    <string name="task_due_date">Due Date</string>
+    <!-- Task.Status -->
+    <string name="task_status">Status</string>
+    <string name="task_status_pending">Pending</string>
+    <string name="task_status_completed">Completed</string>
+    <string name="task_importance_overdue">Overdue</string>
 
     <!-- Button -->
     <string name="button_ok">Ok</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_add_group">Add Group</string>
     <string name="button_yes">Yes</string>
-
-    <!-- Add List -->
-    <string name="list_add">Add List</string>
-    <string name="title_activity_add_list">Add List</string>
-    <string name="task_importance">Importance Level</string>
-    <string name="action_save">Save</string>
-    <string name="message_add_group">Please enter name for the group</string>
-    <string name="delete_all_task">Are you sure to delete all tasks? (This will not delete groups)</string>
-    <string name="delete_group">Are you sure to delete this group? (All related task will be deleted as well)</string>
-    <string name="title_activity_view_list">View Task</string>
-    <string name="task_status">Status</string>
     <string name="button_done">Done</string>
-    <string name="task_status_pending">Pending</string>
-    <string name="task_status_completed">Completed</string>
-    <string name="task_importance_overdue">Overdue</string>
-    <string name="action_complete_task">Done</string>
-    <string name="action_delete_task">Delete</string>
+
+    <!-- Messages -->
+    <string name="message_add_group">Please enter name for the group</string>
+    <string name="message_delete_all_task">Are you sure to delete all tasks? (This will not delete groups)</string>
+    <string name="message_delete_group">Are you sure to delete this group? (All related task will be deleted as well)</string>
+    <string name="message_title_required">Title cannot be empty</string>
+    <string name="message_removing_default_group">Default group cannot be deleted but all task in this group are removed</string>
+    <string name="message_group_name_required">Group name cannot be empty</string>
+    <string name="message_group_name_exist">Group name already exist</string>
+    <string name="message_invalid_task">Invalid task</string>
+    <string name="message_no_due_date">No due date</string>
+
 </resources>
