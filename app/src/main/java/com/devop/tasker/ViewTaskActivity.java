@@ -87,13 +87,13 @@ public class ViewTaskActivity extends AppCompatActivity {
                 item.setVisible(false);
                 completeTask();
                 break;
+
             case R.id.action_delete:
                 showDeleteTaskDialog();
                 break;
 
             default:
                 return super.onOptionsItemSelected(item);
-
         }
         return true;
     }
