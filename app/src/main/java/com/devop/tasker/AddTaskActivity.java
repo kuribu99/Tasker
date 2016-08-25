@@ -182,10 +182,13 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void saveTask() {
-        if (titleEditText.getText().toString().isEmpty()) {
+        if (titleEditText.getText().toString().isEmpty())
             Toast.makeText(this, R.string.message_title_required, Toast.LENGTH_SHORT).show();
 
-        } else {
+        else if (reminderCalendar.getTimeInMillis() < System.currentTimeMillis())
+            Toast.makeText(this, R.string.message_due_date_past, Toast.LENGTH_SHORT).show();
+
+        else {
             Task task;
 
             if (dueDateSwitch.isChecked()) {

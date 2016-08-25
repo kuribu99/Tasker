@@ -99,6 +99,15 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
+        // Initialize layout to add group
+        LinearLayout logoLayout = (LinearLayout) findViewById(R.id.nav_logo);
+        logoLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCredits();
+            }
+        });
+
         // Initialize task list
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -254,6 +263,14 @@ public class HomeActivity extends AppCompatActivity
         builder.setView(editText);
         builder.setPositiveButton(R.string.button_add_group, listener);
         builder.setNegativeButton(R.string.button_cancel, listener);
+
+        builder.show();
+    }
+
+    private void showCredits() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.credit_title);
+        builder.setMessage(R.string.credit_message);
 
         builder.show();
     }

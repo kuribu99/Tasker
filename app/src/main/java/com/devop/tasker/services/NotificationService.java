@@ -58,37 +58,50 @@ public class NotificationService extends IntentService {
         if (taskID != UNDEFINED) {
             Task task = Task.findByID(databaseHelper, taskID);
 
-            if (task == null)
-                Log.d("[Warning]", "Task deleted from database");
+            // Handle actions accordingly
+            switch (intent.getIntExtra(EXTRA_ACTION, UNDEFINED)) {
 
-            else if (task.getStatus() == Task.Status.COMPLETED)
-                Log.d("[Warning]", "Completed task show notification");
+                case ACTION_SHOW_NOTIFICATION:
+                    if (task == null)
+                        Log.d("[Warning]", "Task deleted from database");
 
-            else {
-                // Handle actions accordingly
-                switch (intent.getIntExtra(EXTRA_ACTION, UNDEFINED)) {
+                    else if (task.getStatus() == Task.Status.COMPLETED)
+                        Log.d("[Warning]", "Completed task show notification");
 
-                    case ACTION_SHOW_NOTIFICATION:
+                    else
                         ShowNotification(task);
-                        break;
+                    break;
 
-                    case ACTION_COMPLETE:
+                case ACTION_COMPLETE:
+                    if (task == null)
+                        Log.d("[Warning]", "Task deleted from database");
+
+                    else if (task.getStatus() == Task.Status.COMPLETED)
+                        Log.d("[Warning]", "Completed task show notification");
+
+                    else {
                         task.setStatus(Task.Status.COMPLETED);
                         task.save(databaseHelper);
-                        RemoveNotification(taskID);
-                        break;
+                    }
+                    RemoveNotification(taskID);
+                    break;
 
-                    case ACTION_DELAY:
+                case ACTION_DELAY:
+                    if (task == null)
+                        Log.d("[Warning]", "Task deleted from database");
+
+                    else if (task.getStatus() == Task.Status.COMPLETED)
+                        Log.d("[Warning]", "Completed task show notification");
+
+                    else
                         DelayTask(task, databaseHelper);
+                    RemoveNotification(taskID);
+                    break;
 
-                        RemoveNotification(taskID);
-                        break;
+                case ACTION_REMOVE_NOTIFICATION:
+                    RemoveNotification(taskID);
+                    break;
 
-                    case ACTION_REMOVE_NOTIFICATION:
-                        RemoveNotification(taskID);
-                        break;
-
-                }
             }
         }
         databaseHelper.close();
@@ -191,8 +204,9 @@ public class NotificationService extends IntentService {
         // Set the alarm
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        // Comment the following line in real usage
-        notificationTime = System.currentTimeMillis() + 3000;
+        // TODO: Uncomment the following line to test notification
+        // TODO: Comment the following line in real usage
+        //notificationTime = System.currentTimeMillis() + 2000;
 
         manager.set(AlarmManager.RTC_WAKEUP, notificationTime, pendingIntent);
     }

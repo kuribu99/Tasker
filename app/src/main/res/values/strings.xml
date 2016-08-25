@@ -52,4 +52,14 @@
     <string name="message_invalid_task">Invalid task</string>
     <string name="message_no_due_date">No due date</string>
 
+    <!-- Credits -->
+    <string name="credit_title">Credits</string>
+    <string name="credit_message">
+        "Tasker", an eloquent To-Do List Manager by "DevOp"\n\n
+        Lead Developers:\n
+            - Lim Jia Hui\n
+            - Kong Meng Yeow\n
+    </string>
+    <string name="message_due_date_past">Due date cannot be in the past</string>
+
 </resources>
