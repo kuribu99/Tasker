@@ -10,7 +10,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:src="@android:drawable/btn_star"/>
+        android:src="@android:drawable/ic_input_get"/>
 
     <TextView
         android:id="@+id/text_view"
