@@ -13,9 +13,6 @@ import com.devop.tasker.models.Group;
 
 import java.util.List;
 
-/**
- * Created by Kong My on 21/8/2016.
- */
 public class GroupDropdownAdapter extends BaseAdapter {
 
     private final Context context;

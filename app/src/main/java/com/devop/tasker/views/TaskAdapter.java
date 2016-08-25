@@ -12,9 +12,6 @@ import com.devop.tasker.models.Task;
 
 import java.util.List;
 
-/**
- * Created by Kong My on 7/7/2016.
- */
 public class TaskAdapter extends RecyclerView.Adapter<AbstractViewHolder>
         implements AbstractViewHolder.OnTaskActionPerformedListener {
 

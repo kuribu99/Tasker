@@ -5,9 +5,6 @@ import android.widget.LinearLayout;
 
 import com.devop.tasker.R;
 
-/**
- * Created by Kong My on 7/7/2016.
- */
 public class EmptyViewHolder extends AbstractViewHolder implements View.OnClickListener {
 
     private LinearLayout addTaskLayout;

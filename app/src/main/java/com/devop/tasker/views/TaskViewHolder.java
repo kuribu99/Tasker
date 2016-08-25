@@ -9,9 +9,6 @@ import android.widget.TextView;
 import com.devop.tasker.R;
 import com.devop.tasker.models.Task;
 
-/**
- * Created by Kong My on 7/7/2016.
- */
 public class TaskViewHolder extends AbstractViewHolder
         implements View.OnClickListener {
 

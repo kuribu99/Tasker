@@ -10,9 +10,6 @@ import android.widget.TextView;
 import com.devop.tasker.R;
 import com.devop.tasker.models.Task;
 
-/**
- * Created by Kong My on 21/8/2016.
- */
 public class ImportanceLevelAdapter extends BaseAdapter {
 
     private final Context context;

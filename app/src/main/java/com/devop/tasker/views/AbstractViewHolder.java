@@ -5,9 +5,6 @@ import android.view.View;
 
 import com.devop.tasker.models.Task;
 
-/**
- * Created by Kong My on 7/7/2016.
- */
 public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
 
     protected OnTaskActionPerformedListener listener;

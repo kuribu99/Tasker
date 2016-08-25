@@ -51,6 +51,8 @@
     <string name="message_group_name_exist">Group name already exist</string>
     <string name="message_invalid_task">Invalid task</string>
     <string name="message_no_due_date">No due date</string>
+    <string name="message_due_date_past">Due date cannot be in the past</string>
+    <string name="message_delete_task">Are you sure to delete this task?</string>
 
     <!-- Credits -->
     <string name="credit_title">Credits</string>
@@ -60,7 +62,5 @@
             - Lim Jia Hui\n
             - Kong Meng Yeow\n
     </string>
-    <string name="message_due_date_past">Due date cannot be in the past</string>
-    <string name="message_delete_task">Are you sure to delete this task?</string>
 
 </resources>
