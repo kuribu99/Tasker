@@ -25,6 +25,7 @@ import com.devop.tasker.fragments.DatePickerFragment;
 import com.devop.tasker.fragments.TimePickerFragment;
 import com.devop.tasker.models.Group;
 import com.devop.tasker.models.Task;
+import com.devop.tasker.services.NotificationService;
 import com.devop.tasker.views.GroupDropdownAdapter;
 import com.devop.tasker.views.ImportanceLevelAdapter;
 
@@ -33,10 +34,7 @@ import java.util.Calendar;
 
 public class AddTaskActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
-    public static final int REQUEST_CODE_ADD_TASK = 1;
-    public static final int RESULT_CODE_SUCCESS = 1;
     public static final String EXTRA_SELECTED_GROUP = "com.devop.tasker.AddTaskActivity.EXTRA.SELECTED_GROUP";
-    public static final String EXTRA_NEW_TASK = "com.devop.tasker.AddTaskActivity.EXTRA.NEW_TASK";
 
     private Spinner groupSpinner;
     private EditText titleEditText;
@@ -174,8 +172,8 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
 
-        dateButton.setText(String.format(dateFormat.format(reminderCalendar.getTime())));
-        timeButton.setText(String.format(timeFormat.format(reminderCalendar.getTime())));
+        dateButton.setText(dateFormat.format(reminderCalendar.getTime()));
+        timeButton.setText(timeFormat.format(reminderCalendar.getTime()));
     }
 
     @Override
@@ -210,9 +208,9 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
             task.save(databaseHelper);
             databaseHelper.close();
 
-            Intent data = new Intent();
-            data.putExtra(EXTRA_NEW_TASK, task);
-            setResult(RESULT_CODE_SUCCESS, data);
+            // Start scheduling notification
+            if (task.getDueTime() != Task.NO_DUE)
+                startService(NotificationService.newNotification(this, task.getId()));
 
             finish();
         }

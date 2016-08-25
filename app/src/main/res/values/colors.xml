@@ -16,4 +16,5 @@
     <color name="colorTaskImportanceLow">#ddbbbbcc</color>
     <color name="colorTaskImportanceNormal">#FF6600</color>
     <color name="colorTaskImportanceImportant">#FF0000</color>
+    <color name="colorTaskCompleted">#9acc6a</color>
 </resources>

@@ -18,13 +18,13 @@
         android:text="My account"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/colorText"
-        android:textSize="20dp" />
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="android.studio@android.com"
-        android:textColor="@color/colorText" />
+        android:textColor="@color/colorText"/>
 
 </LinearLayout>

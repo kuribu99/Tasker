@@ -7,16 +7,16 @@
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_gravity="center_vertical"
-        android:src="@android:drawable/btn_star" />
+        android:src="@android:drawable/btn_star"/>
 
     <TextView
         android:id="@+id/text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
 </LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_done"
+        android:icon="@drawable/ic_done_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/action_complete_task"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/ic_clear_white_24dp"
+        android:orderInCategory="200"
+        android:title="@string/action_delete_task"
+        app:showAsAction="ifRoom"/>
+
+
+</menu>

@@ -9,9 +9,9 @@
                 android:centerColor="#FFF3F3F3"
                 android:endColor="@color/colorTaskImportanceNormal"
                 android:startColor="#FFF3F3F3"
-                android:type="linear" />
+                android:type="linear"/>
 
-            <corners android:radius="0dp" />
+            <corners android:radius="0dp"/>
         </shape>
     </item>
 

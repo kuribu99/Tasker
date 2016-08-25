@@ -10,8 +10,8 @@
     <include
         layout="@layout/app_bar_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
-    <include layout="@layout/navigation_drawer_home" />
+    <include layout="@layout/navigation_drawer_home"/>
 
 </android.support.v4.widget.DrawerLayout>

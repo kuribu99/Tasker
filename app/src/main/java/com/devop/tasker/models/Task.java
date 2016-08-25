@@ -219,6 +219,18 @@ public class Task implements Serializable {
         public static final int PENDING = 0;
         public static final int COMPLETED = 1;
         public static final int OVERDUE = 2;
+
+        public static int getStringResource(int status) {
+            switch (status) {
+                case PENDING:
+                    return R.string.task_status_pending;
+                case COMPLETED:
+                    return R.string.task_status_completed;
+                case OVERDUE:
+                    return R.string.task_importance_overdue;
+            }
+            return -1;
+        }
     }
 
     public static abstract class Importance {

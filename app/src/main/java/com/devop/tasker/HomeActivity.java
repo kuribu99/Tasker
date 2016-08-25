@@ -3,7 +3,6 @@ package com.devop.tasker;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
@@ -111,6 +110,13 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        refreshTasks();
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             closeDrawer();
@@ -139,7 +145,7 @@ public class HomeActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.action_add_task:
-                startActivityForResult(AddTaskActivity.newIntent(this, groupID), AddTaskActivity.REQUEST_CODE_ADD_TASK);
+                startActivity(AddTaskActivity.newIntent(this, groupID));
                 break;
 
             default:
@@ -147,17 +153,6 @@ public class HomeActivity extends AppCompatActivity
 
         }
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case AddTaskActivity.REQUEST_CODE_ADD_TASK:
-                handleAddTaskResult(resultCode, data);
-                break;
-        }
     }
 
     @Override
@@ -231,16 +226,6 @@ public class HomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
     }
 
-    private void handleAddTaskResult(int resultCode, Intent data) {
-        if (resultCode == AddTaskActivity.RESULT_CODE_SUCCESS) {
-            Task task = (Task) data.getSerializableExtra(AddTaskActivity.EXTRA_NEW_TASK);
-            taskAdapter.addTask(task);
-
-            if (task.getDueTime() != Task.NO_DUE)
-                startService(NotificationService.newNotification(this, task.getId()));
-        }
-    }
-
     private void showAddGroupDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText editText = new EditText(this);
@@ -293,8 +278,10 @@ public class HomeActivity extends AppCompatActivity
         Group group = (Group) groupAdapter.getItem(position);
 
         // Delete all task from this group
-        for (Task task : group.getTasks(databaseHelper))
+        for (Task task : group.getTasks(databaseHelper)) {
+            startService(NotificationService.removeNotification(this, task.getId()));
             task.delete(databaseHelper);
+        }
 
         // Delete the all group except Default
         if (group.getGroupName().equals(Group.DEFAULT_GROUP_NAME))
@@ -312,10 +299,6 @@ public class HomeActivity extends AppCompatActivity
         groupID = (int) id;
         getSupportActionBar().setTitle(((Group) groupAdapter.getItem(position)).getGroupName());
         refreshTasks();
-    }
-
-    private void refreshAll() {
-        taskAdapter.refresh(groupID);
     }
 
 }

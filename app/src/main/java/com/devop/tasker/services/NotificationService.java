@@ -65,7 +65,7 @@ public class NotificationService extends IntentService {
                     if (task == null)
                         Log.d("[Warning]", "Task deleted from database");
                     else if (task.getStatus() == Task.Status.COMPLETED)
-                        Log.d("[Warning]", "Completed task shown notification");
+                        Log.d("[Warning]", "Completed task show notification");
                     else
                         ShowNotification(task);
                     break;
@@ -74,7 +74,7 @@ public class NotificationService extends IntentService {
                     if (task == null)
                         Log.d("[Warning]", "Task deleted from database");
                     else if (task.getStatus() == Task.Status.COMPLETED)
-                        Log.d("[Warning]", "Completed task shown notification");
+                        Log.d("[Warning]", "Completed task show notification");
                     else {
                         task.setStatus(Task.Status.COMPLETED);
                         task.save(databaseHelper);
@@ -86,7 +86,7 @@ public class NotificationService extends IntentService {
                     if (task == null)
                         Log.d("[Warning]", "Task deleted from database");
                     else if (task.getStatus() == Task.Status.COMPLETED)
-                        Log.d("[Warning]", "Completed task shown notification");
+                        Log.d("[Warning]", "Completed task show notification");
                     else
                         DelayTask(task, databaseHelper);
 

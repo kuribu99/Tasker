@@ -6,8 +6,8 @@
     android:fitsSystemWindows="true"
     tools:context="com.devop.tasker.AddTaskActivity">
 
-    <include layout="@layout/app_bar" />
+    <include layout="@layout/app_bar"/>
 
-    <include layout="@layout/content_add_task" />
+    <include layout="@layout/content_add_task"/>
 
 </android.support.design.widget.CoordinatorLayout>

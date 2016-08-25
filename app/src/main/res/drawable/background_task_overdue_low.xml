@@ -8,8 +8,8 @@
                 android:angle="45"
                 android:endColor="@color/colorTaskImportanceLow"
                 android:startColor="#FFF3F3F3"
-                android:type="linear" />
-            <corners android:radius="0dp" />
+                android:type="linear"/>
+            <corners android:radius="0dp"/>
         </shape>
     </item>
 

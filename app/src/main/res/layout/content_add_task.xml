@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:padding="5dp" />
+            android:padding="5dp"/>
 
         <EditText
             android:id="@+id/task_title"
@@ -33,7 +33,7 @@
             android:background="@drawable/border_text"
             android:hint="@string/task_title"
             android:maxLines="1"
-            android:padding="10dp" />
+            android:padding="10dp"/>
 
         <EditText
             android:id="@+id/task_description"
@@ -44,7 +44,7 @@
             android:gravity="top|left"
             android:hint="@string/task_description"
             android:minLines="4"
-            android:padding="10dp" />
+            android:padding="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,13 +60,13 @@
                 android:layout_weight="1"
                 android:padding="5dp"
                 android:text="@string/task_importance"
-                android:textColor="@color/colorImportance" />
+                android:textColor="@color/colorImportance"/>
 
             <Spinner
                 android:id="@+id/importance_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
 
         </LinearLayout>
 
@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="@string/task_due_date" />
+            android:text="@string/task_due_date"/>
 
         <LinearLayout
             android:id="@+id/layout_due_date"
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
 
             <Button
                 android:id="@+id/button_time"
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
 
         </LinearLayout>
 

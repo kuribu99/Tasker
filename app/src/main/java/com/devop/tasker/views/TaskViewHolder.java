@@ -40,7 +40,11 @@ public class TaskViewHolder extends AbstractViewHolder
         bindedTask = task;
         textboxTaskName.setText(bindedTask.getTitle());
         buttonDone.setVisibility(bindedTask.getStatus() == Task.Status.COMPLETED ? View.INVISIBLE : View.VISIBLE);
-        taskViewLayout.setBackgroundResource(getTaskBackgroundColor(task.getStatus(), task.getImportance()));
+        updateBackgroundColor();
+    }
+
+    private void updateBackgroundColor() {
+        taskViewLayout.setBackgroundResource(getTaskBackgroundColor(bindedTask.getStatus(), bindedTask.getImportance()));
     }
 
     private int getTaskBackgroundColor(int status, int importance) {
@@ -101,6 +105,7 @@ public class TaskViewHolder extends AbstractViewHolder
             case R.id.button_done:
                 buttonDone.setVisibility(View.INVISIBLE);
                 listener.onTaskCompleted(bindedTask);
+                updateBackgroundColor();
                 break;
 
             case R.id.button_delete:
