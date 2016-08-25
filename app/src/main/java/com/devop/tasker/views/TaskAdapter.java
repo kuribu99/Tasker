@@ -86,29 +86,16 @@ public class TaskAdapter extends RecyclerView.Adapter<AbstractViewHolder>
     }
 
     @Override
-    public void onTaskCompleted(Task task) {
-        listener.onTaskCompleted(task);
+    public void onTaskActionPerformed(int actionCode, Task task) {
+        // Escalate to parent listener
+        listener.onTaskActionPerformed(actionCode, task);
     }
 
-    @Override
-    public void onTaskDeleted(Task task) {
+    public void deleteTask(Task task) {
         int index = taskList.indexOf(task);
         if (index >= 0) {
             taskList.remove(task);
             notifyItemRemoved(index);
-
-            // Escalate to parent listener
-            listener.onTaskDeleted(task);
         }
-    }
-
-    @Override
-    public void onTaskClicked(Task task) {
-        listener.onTaskClicked(task);
-    }
-
-    public void addTask(Task task) {
-        taskList.add(task);
-        notifyDataSetChanged();
     }
 }

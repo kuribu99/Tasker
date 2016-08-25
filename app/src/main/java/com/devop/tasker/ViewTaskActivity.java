@@ -1,6 +1,8 @@
 package com.devop.tasker;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -86,8 +88,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                 completeTask();
                 break;
             case R.id.action_delete:
-                deleteTask();
-                finish();
+                showDeleteTaskDialog();
                 break;
 
             default:
@@ -95,6 +96,29 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         }
         return true;
+    }
+
+    private void showDeleteTaskDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        deleteTask();
+                        finish();
+                        break;
+                    default:
+                        dialog.dismiss();
+                }
+            }
+        };
+
+        builder.setMessage(R.string.message_delete_task);
+        builder.setPositiveButton(R.string.button_yes, listener);
+        builder.setNegativeButton(R.string.button_cancel, listener);
+
+        builder.show();
     }
 
     private void deleteTask() {

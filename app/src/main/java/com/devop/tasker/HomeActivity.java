@@ -115,7 +115,7 @@ public class HomeActivity extends AppCompatActivity
         recyclerView.setAdapter(taskAdapter);
 
         // Initialize current group to all tasks
-        showGroupTasks(0, Group.ALL_TASK_GROUP_ID);
+        refreshGroupTask(0, Group.ALL_TASK_GROUP_ID);
     }
 
     @Override
@@ -164,74 +164,53 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTaskCompleted(Task task) {
-        // Update task status
-        task.setStatus(Task.Status.COMPLETED);
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        task.save(databaseHelper);
-        databaseHelper.close();
-
-        // Remove remaining notification
-        startService(NotificationService.removeNotification(this, task.getId()));
-    }
-
-    @Override
-    public void onTaskDeleted(Task task) {
-        // Remove remaining notification
-        startService(NotificationService.removeNotification(this, task.getId()));
-
-        // Remove from database
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        task.delete(databaseHelper);
-        databaseHelper.close();
-    }
-
-    @Override
-    public void onTaskClicked(Task task) {
-        if (task == null)
-            startActivity(AddTaskActivity.newIntent(this, groupID));
-        else
-            startActivity(ViewTaskActivity.newIntent(this, task));
-    }
-
-    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        showGroupTasks(position, id);
+        refreshGroupTask(position, id);
         closeDrawer();
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        deleteGroup(position);
-                        break;
-                    default:
-                        dialog.dismiss();
-                }
-            }
-        };
-
-        int message;
-        if (position == 0)
-            message = R.string.message_delete_all_task;
-        else
-            message = R.string.message_delete_group;
-
-        builder.setMessage(message);
-        builder.setPositiveButton(R.string.button_yes, listener);
-        builder.setNegativeButton(R.string.button_cancel, listener);
-
-        builder.show();
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        showDeleteGroupDialog(position);
         return true;
+    }
+
+    @Override
+    public void onTaskActionPerformed(int actionCode, Task task) {
+        switch (actionCode) {
+            case ACTION_CLICK:
+                triggerTaskActivities(task);
+                break;
+
+            case ACTION_COMPLETE:
+                completeTask(task);
+                break;
+
+            case ACTION_DELETE:
+                showDeleteTaskDialog(task);
+        }
     }
 
     public void closeDrawer() {
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void refreshGroupTask(int position, long id) {
+        groupID = (int) id;
+        getSupportActionBar().setTitle(((Group) groupAdapter.getItem(position)).getGroupName());
+        refreshTasks();
+    }
+
+    public void refreshTasks() {
+        taskAdapter.refresh(groupID);
+    }
+
+    private void showCredits() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.credit_title);
+        builder.setMessage(R.string.credit_message);
+
+        builder.show();
     }
 
     private void showAddGroupDialog() {
@@ -267,10 +246,52 @@ public class HomeActivity extends AppCompatActivity
         builder.show();
     }
 
-    private void showCredits() {
+    private void showDeleteGroupDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.credit_title);
-        builder.setMessage(R.string.credit_message);
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        deleteGroup(position);
+                        break;
+                    default:
+                        dialog.dismiss();
+                }
+            }
+        };
+
+        int message;
+        if (position == 0)
+            message = R.string.message_delete_all_task;
+        else
+            message = R.string.message_delete_group;
+
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.button_yes, listener);
+        builder.setNegativeButton(R.string.button_cancel, listener);
+
+        builder.show();
+    }
+
+    private void showDeleteTaskDialog(final Task task) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        deleteTask(task);
+                        break;
+                    default:
+                        dialog.dismiss();
+                }
+            }
+        };
+
+        builder.setMessage(R.string.message_delete_task);
+        builder.setPositiveButton(R.string.button_yes, listener);
+        builder.setNegativeButton(R.string.button_cancel, listener);
 
         builder.show();
     }
@@ -283,10 +304,6 @@ public class HomeActivity extends AppCompatActivity
         databaseHelper.close();
 
         groupAdapter.addGroup(group);
-    }
-
-    public void refreshTasks() {
-        taskAdapter.refresh(groupID);
     }
 
     private void deleteGroup(int position) {
@@ -308,13 +325,36 @@ public class HomeActivity extends AppCompatActivity
         }
 
         databaseHelper.close();
-        showGroupTasks(0, Group.ALL_TASK_GROUP_ID);
+        refreshGroupTask(0, Group.ALL_TASK_GROUP_ID);
     }
 
-    private void showGroupTasks(int position, long id) {
-        groupID = (int) id;
-        getSupportActionBar().setTitle(((Group) groupAdapter.getItem(position)).getGroupName());
-        refreshTasks();
+    public void completeTask(Task task) {
+        // Update task status
+        task.setStatus(Task.Status.COMPLETED);
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        task.save(databaseHelper);
+        databaseHelper.close();
+
+        // Remove remaining notification
+        startService(NotificationService.removeNotification(this, task.getId()));
     }
 
+    public void deleteTask(Task task) {
+        // Remove remaining notification
+        startService(NotificationService.removeNotification(this, task.getId()));
+
+        // Remove from database
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        task.delete(databaseHelper);
+        databaseHelper.close();
+
+        taskAdapter.deleteTask(task);
+    }
+
+    public void triggerTaskActivities(Task task) {
+        if (task == null)
+            startActivity(AddTaskActivity.newIntent(this, groupID));
+        else
+            startActivity(ViewTaskActivity.newIntent(this, task));
+    }
 }

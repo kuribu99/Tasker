@@ -99,17 +99,18 @@ public class TaskViewHolder extends AbstractViewHolder
 
         switch (v.getId()) {
             case R.id.task_view_layout:
-                listener.onTaskClicked(bindedTask);
+                listener.onTaskActionPerformed(OnTaskActionPerformedListener.ACTION_CLICK, bindedTask);
                 break;
 
             case R.id.button_done:
+                listener.onTaskActionPerformed(OnTaskActionPerformedListener.ACTION_COMPLETE, bindedTask);
+
                 buttonDone.setVisibility(View.INVISIBLE);
-                listener.onTaskCompleted(bindedTask);
                 updateBackgroundColor();
                 break;
 
             case R.id.button_delete:
-                listener.onTaskDeleted(bindedTask);
+                listener.onTaskActionPerformed(OnTaskActionPerformedListener.ACTION_DELETE, bindedTask);
                 break;
         }
     }

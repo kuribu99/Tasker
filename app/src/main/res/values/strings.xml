@@ -61,5 +61,6 @@
             - Kong Meng Yeow\n
     </string>
     <string name="message_due_date_past">Due date cannot be in the past</string>
+    <string name="message_delete_task">Are you sure to delete this task?</string>
 
 </resources>

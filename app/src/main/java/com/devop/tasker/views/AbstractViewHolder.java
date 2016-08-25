@@ -26,11 +26,11 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
 
     public interface OnTaskActionPerformedListener {
 
-        void onTaskCompleted(Task task);
+        int ACTION_CLICK = 0;
+        int ACTION_COMPLETE = 1;
+        int ACTION_DELETE = 2;
 
-        void onTaskDeleted(Task task);
-
-        void onTaskClicked(Task task);
+        void onTaskActionPerformed(int actionCode, Task task);
 
     }
 

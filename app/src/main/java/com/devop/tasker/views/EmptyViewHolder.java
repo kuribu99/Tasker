@@ -21,6 +21,6 @@ public class EmptyViewHolder extends AbstractViewHolder implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        listener.onTaskClicked(null);
+        listener.onTaskActionPerformed(OnTaskActionPerformedListener.ACTION_CLICK, null);
     }
 }
