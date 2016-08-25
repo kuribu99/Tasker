@@ -16,9 +16,6 @@ import java.util.List;
 
 import static com.devop.tasker.db.TaskerContract.TaskColumns;
 
-/**
- * Created by Kong My on 11/7/2016.
- */
 public class Task implements Serializable {
 
     // Default values

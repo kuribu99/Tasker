@@ -8,9 +8,6 @@ import android.text.format.DateFormat;
 
 import java.util.Calendar;
 
-/**
- * Created by Kong My on 21/8/2016.
- */
 public class TimePickerFragment extends DialogFragment {
 
     public static final String TAG = "com.devop.tasker.fragments.TimePickerFragment.TAG";
