@@ -9,9 +9,6 @@ import com.devop.tasker.models.Group;
 import static com.devop.tasker.db.TaskerContract.TaskColumns;
 import static com.devop.tasker.db.TaskerContract.TaskGroupColumns;
 
-/**
- * Created by Kong My on 11/7/2016.
- */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "TaskerDatabase.db";

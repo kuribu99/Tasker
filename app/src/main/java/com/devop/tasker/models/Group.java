@@ -11,9 +11,6 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Kong My on 13/7/2016.
- */
 public class Group implements Serializable {
 
     // Default values

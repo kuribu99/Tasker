@@ -15,9 +15,6 @@ import com.devop.tasker.R;
 import com.devop.tasker.db.DatabaseHelper;
 import com.devop.tasker.models.Task;
 
-/**
- * Created by Kong My on 13/7/2016.
- */
 public class NotificationService extends IntentService {
 
     public static final String NAME = "NotificationService";

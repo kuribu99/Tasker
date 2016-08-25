@@ -4,14 +4,9 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.View;
-import android.widget.DatePicker;
 
 import java.util.Calendar;
 
-/**
- * Created by Kong My on 21/8/2016.
- */
 public class DatePickerFragment extends DialogFragment {
 
     public static final String TAG = "com.devop.tasker.fragments.DatePickerFragment.TAG";

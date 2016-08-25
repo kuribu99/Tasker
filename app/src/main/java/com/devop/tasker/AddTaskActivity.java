@@ -182,16 +182,18 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void saveTask() {
+        boolean hasDue = dueDateSwitch.isChecked();
+
         if (titleEditText.getText().toString().isEmpty())
             Toast.makeText(this, R.string.message_title_required, Toast.LENGTH_SHORT).show();
 
-        else if (reminderCalendar.getTimeInMillis() < System.currentTimeMillis())
+        else if (hasDue && reminderCalendar.getTimeInMillis() < System.currentTimeMillis())
             Toast.makeText(this, R.string.message_due_date_past, Toast.LENGTH_SHORT).show();
 
         else {
             Task task;
 
-            if (dueDateSwitch.isChecked()) {
+            if (hasDue) {
                 task = new Task(
                         (int) groupSpinner.getSelectedItemId(),
                         titleEditText.getText().toString(),
@@ -212,7 +214,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
             databaseHelper.close();
 
             // Start scheduling notification
-            if (task.getDueTime() != Task.NO_DUE)
+            if (hasDue)
                 startService(NotificationService.newNotification(this, task.getId()));
 
             finish();
