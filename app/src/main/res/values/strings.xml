@@ -33,4 +33,5 @@
     <string name="message_add_group">Please enter name for the group</string>
     <string name="delete_all_task">Are you sure to delete all tasks? (This will not delete groups)</string>
     <string name="delete_group">Are you sure to delete this group? (All related task will be deleted as well)</string>
+    <string name="title_activity_view_list">View Task</string>
 </resources>
